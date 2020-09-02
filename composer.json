@@ -1,0 +1,16 @@
+{
+    "name": "alanalbert/data-structure",
+    "description": "There are some data structure implemented by PHP",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^9.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "alanalbert",
+            "email": "alan1766447919@gmail.com"
+        }
+    ],
+    "require": {}
+}
