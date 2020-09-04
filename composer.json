@@ -12,5 +12,10 @@
             "email": "alan1766447919@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Alan\\Structure\\": "src/"
+        }
+    },
     "require": {}
 }
