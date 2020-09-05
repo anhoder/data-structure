@@ -33,23 +33,19 @@ class LinkedList
     }
 
     /**
-     * Get first node of list.
-     * @return Node
+     * Count next nodes.
+     * @param Node $node
+     * @return int
      */
-    public function getHead()
+    public static function count(Node $node)
     {
-        return $this->head;
-    }
+        $length = 0;
+        while (!is_null($node)) {
+            ++$length;
+            $node = $node->getNext();
+        }
 
-    /**
-     * Set first node of list.
-     * @param Node $head
-     * @return LinkedList
-     */
-    public function setHead(Node $head)
-    {
-        $this->head = $head;
-        return $this;
+        return $length;
     }
 
     /**
@@ -59,7 +55,7 @@ class LinkedList
      */
     public function getNode(int $index)
     {
-        if ($index > $this->length - 1) return null;
+        if ($index > $this->length - 1 || $index < 0) return null;
         $cursor = $this->head;
         for ($i = 0; $i < $index; ++$i) {
             if (is_null($cursor)) return null;
@@ -78,19 +74,46 @@ class LinkedList
      */
     public function setNode(int $index, Node $node)
     {
-        if ($index > $this->length - 1) return false;
+        if ($index > $this->length - 1 || $index < 0) return false;
 
         $prevNode = $this->getNode($index - 1);
         if (is_null($prevNode)) return false;
+
+        $objNode = $prevNode->getNext();
+
+        // update length
+        $objCount = self::count($objNode);
+        $count = self::count($node);
+        $this->length = $this->length + $count - $objCount;
 
         $prevNode->setNext($node);
 
         return $this;
     }
 
-    public function addNode(int $index, Node $node)
+    /**
+     * Insert node into list.
+     * @param int $index start with 0
+     * @param Node $node
+     * @return $this|false
+     */
+    public function insertNode(int $index, Node $node)
     {
-        // TODO
+        $prevNode = $this->getNode($index - 1);
+        if (is_null($prevNode)) return false;
+
+        $nextNode = $prevNode->getNext();
+        $node->setNext($nextNode);
+        $prevNode->setNext($node);
+
+        ++$this->length;
+
+        return $this;
+    }
+
+    public function addNode(Node $node)
+    {
+        //
     }
 
     /**
