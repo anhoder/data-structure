@@ -33,6 +33,24 @@ class LinkedList
     }
 
     /**
+     * Get head of list..
+     * @return Node|null
+     */
+    public function getHead()
+    {
+        return $this->head;
+    }
+
+    /**
+     * Get length.
+     * @return int
+     */
+    public function getLength()
+    {
+        return $this->length;
+    }
+
+    /**
      * Count next nodes.
      * @param Node $node
      * @return int
@@ -74,7 +92,13 @@ class LinkedList
      */
     public function setNode(int $index, Node $node)
     {
-        if ($index > $this->length - 1 || $index < 0) return false;
+        if ($this->length == 0 && $index == 0) {
+            $this->head = $node;
+            $this->length = self::count($node);
+            return $this;
+        }
+
+        if ($index > $this->length || $index < 0) return false;
 
         $prevNode = $this->getNode($index - 1);
         if (is_null($prevNode)) return false;
@@ -99,6 +123,15 @@ class LinkedList
      */
     public function insertNode(int $index, Node $node)
     {
+        if ($index == 0 && $this->length == 0) {
+            $node->setNext(null);
+            $this->head = $node;
+            ++$this->length;
+
+            return $this;
+        }
+        if ($index > $this->length || $index < 0) return false;
+
         $prevNode = $this->getNode($index - 1);
         if (is_null($prevNode)) return false;
 
@@ -111,9 +144,49 @@ class LinkedList
         return $this;
     }
 
+    /**
+     * Add node to the end.
+     * @param Node $node
+     * @return LinkedList
+     */
     public function addNode(Node $node)
     {
-        //
+        $node->setNext(null);
+        if ($this->length == 0) {
+            $this->head = $node;
+            ++$this->length;
+
+            return $this;
+        }
+
+        $last = $this->getNode($this->length - 1);
+        $last->setNext($node);
+        ++$this->length;
+
+        return $this;
+    }
+
+    /**
+     * Remove node.
+     * @param int $index
+     * @return $this|false
+     */
+    public function removeNode(int $index)
+    {
+        if ($index > $this->length - 1 || $index < 0) return false;
+        if ($index == 0) {
+            $this->head = $this->head->getNext();
+            --$this->length;
+
+            return $this;
+        }
+
+        $prev = $this->getNode($index - 1);
+        $delete = $prev->getNext();
+        $prev->setNext($delete->getNext());
+        --$this->length;
+
+        return $this;
     }
 
     /**
@@ -145,13 +218,48 @@ class LinkedList
         return $this;
     }
 
-    public function add(Node $node, int $index = -1)
+    /**
+     * Insert data into list.
+     * @param int $index
+     * @param $data
+     * @return $this|false
+     */
+    public function insert(int $index, $data)
     {
-        // TODO
+        $node = new Node($data);
+        return $this->insertNode($index, $node);
     }
 
+    /**
+     * Add data to the end.
+     * @param $data
+     * @return $this
+     */
+    public function add($data)
+    {
+        $node = new Node($data);
+        return $this->addNode($node);
+    }
+
+    /**
+     * Remove node.
+     * @param int $index
+     * @return $this|false
+     */
     public function remove(int $index)
     {
-        // TODO
+        return $this->removeNode($index);
+    }
+
+    /**
+     * Clear list.
+     * @return LinkedList
+     */
+    public function clear()
+    {
+        $this->head = null;
+        $this->length = 0;
+
+        return $this;
     }
 }

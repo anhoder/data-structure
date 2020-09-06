@@ -43,7 +43,7 @@ class Node
      * @param Node $next
      * @return true
      */
-    public function setNext(Node $next)
+    public function setNext(Node $next = null)
     {
         $this->next = $next;
         return true;
