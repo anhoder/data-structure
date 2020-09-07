@@ -8,6 +8,11 @@ class LinkedListTest extends TestCase
 {
     /**
      * @test test insert.
+     * @covers \Alan\Structure\LinkedList\LinkedList::insertNode
+     * @covers \Alan\Structure\LinkedList\LinkedList::insert
+     * @covers \Alan\Structure\LinkedList\LinkedList::get
+     * @covers \Alan\Structure\LinkedList\LinkedList::getNode
+     * @covers \Alan\Structure\LinkedList\LinkedList::getLength
      */
     public function testInsert()
     {
@@ -47,6 +52,11 @@ class LinkedListTest extends TestCase
 
     /**
      * @test test add.
+     * @covers \Alan\Structure\LinkedList\LinkedList::addNode
+     * @covers \Alan\Structure\LinkedList\LinkedList::add
+     * @covers \Alan\Structure\LinkedList\LinkedList::get
+     * @covers \Alan\Structure\LinkedList\LinkedList::getNode
+     * @covers \Alan\Structure\LinkedList\LinkedList::getLength
      */
     public function testAdd()
     {
@@ -56,5 +66,6 @@ class LinkedListTest extends TestCase
         $linkedList->addNode($first = new Node('first'));
         $this->assertEquals($first, $linkedList->getNode($linkedList->getLength() - 1));
         $this->assertEquals(null, $linkedList->getNode(99));
+
     }
 }
