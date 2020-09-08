@@ -92,7 +92,7 @@ class LinkedList
      */
     public function setNode(int $index, Node $node)
     {
-        if ($this->length == 0 && $index == 0) {
+        if ($index == 0) {
             $this->head = $node;
             $this->length = self::count($node);
             return $this;
