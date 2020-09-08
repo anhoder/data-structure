@@ -125,13 +125,44 @@ class LinkedListTest extends TestCase
         $this->assertEquals(2, $linkedList->getLength());
     }
 
+    /**
+     * @test Test remove.
+     * @covers \Alan\Structure\LinkedList\LinkedList::remove
+     * @covers \Alan\Structure\LinkedList\LinkedList::removeNode
+     */
     public function testRemove()
     {
+        $linkedList = new LinkedList();
 
+        $linkedList->add('first')->add('second')->add('third');
+        $this->assertEquals(3, $linkedList->getLength());
+
+        // Remove.
+        $linkedList->remove(1);
+        $this->assertEquals(2, $linkedList->getLength());
+        $this->assertEquals('first', $linkedList->get(0));
+        $this->assertEquals('third', $linkedList->get(1));
+
+        // Remove node.
+        $linkedList->removeNode(0);
+        $this->assertEquals(1, $linkedList->getLength());
+        $this->assertEquals('third', $linkedList->get(0));
+        $this->assertEquals(null, $linkedList->get(1));
     }
 
-    public function clear()
+    /**
+     * @test Test clear.
+     * @covers \Alan\Structure\LinkedList\LinkedList::clear
+     */
+    public function testClear()
     {
+        $linkedList = new LinkedList();
 
+        $linkedList->add('first')->add('second')->add('third');
+        $this->assertEquals(3, $linkedList->getLength());
+
+        $linkedList->clear();
+        $this->assertEquals(0, $linkedList->getLength());
+        $this->assertEquals(null, $linkedList->get(0));
     }
 }
