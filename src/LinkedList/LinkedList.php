@@ -2,7 +2,10 @@
 
 namespace Alan\Structure\LinkedList;
 
-class LinkedList
+use ArrayAccess;
+use Iterator;
+
+class LinkedList implements ArrayAccess, Iterator
 {
     /**
      * First node of list.
@@ -11,10 +14,16 @@ class LinkedList
     private $head;
 
     /**
+     * Cursor of the list.
+     * @var int
+     */
+    private $cursor;
+
+    /**
      * Cursor node of the list.
      * @var Node
      */
-    private $cursor;
+    private $cursorNode;
 
     /**
      * Length of the list.
@@ -28,7 +37,8 @@ class LinkedList
     public function __construct()
     {
         $this->head = null;
-        $this->cursor = $this->head;
+        $this->cursorNode = $this->head;
+        $this->cursor = 0;
         $this->length = 0;
     }
 
@@ -262,4 +272,92 @@ class LinkedList
 
         return $this;
     }
+
+    /**
+     * Get current data.
+     * @return mixed|null
+     */
+    public function current()
+    {
+        if (is_null($this->cursorNode)) return null;
+        return $this->cursorNode->getData();
+    }
+
+    /**
+     * Next.
+     */
+    public function next()
+    {
+        if (!is_null($this->cursorNode)) {
+            $this->cursorNode = $this->cursorNode->getNext();
+            ++$this->cursor;
+        }
+    }
+
+    /**
+     * Get key.
+     * @return int
+     */
+    public function key()
+    {
+        return $this->cursor;
+    }
+
+    /**
+     * Is cursor valid?
+     * @return bool
+     */
+    public function valid()
+    {
+        return $this->cursor < $this->length - 1 && $this->cursor >= 0;
+    }
+
+    /**
+     * Rewind.
+     */
+    public function rewind()
+    {
+        $this->cursor = 0;
+        $this->cursorNode = $this->head;
+    }
+
+    /**
+     * Is offset exists?
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return $offset < $this->length - 1 && $offset >= 0;
+    }
+
+    /**
+     * Get data in offset.
+     * @param mixed $offset
+     * @return mixed|null
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    /**
+     * Set data in offset.
+     * @param mixed $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->set($offset, $value);
+    }
+
+    /**
+     * Remove data in offset.
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset)
+    {
+        $this->remove($offset);
+    }
+
 }

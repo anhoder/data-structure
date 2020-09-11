@@ -165,4 +165,40 @@ class LinkedListTest extends TestCase
         $this->assertEquals(0, $linkedList->getLength());
         $this->assertEquals(null, $linkedList->get(0));
     }
+
+    /**
+     * @test Test array access.
+     * @covers \Alan\Structure\LinkedList\LinkedList::offsetExists
+     * @covers \Alan\Structure\LinkedList\LinkedList::offsetGet
+     * @covers \Alan\Structure\LinkedList\LinkedList::offsetSet
+     * @covers \Alan\Structure\LinkedList\LinkedList::offsetUnset
+     */
+    public function testArrayAccess()
+    {
+        $linkedList = new LinkedList();
+        $linkedList[0] = 'first';
+        $this->assertEquals(1, $linkedList->getLength());
+        $this->assertEquals('first', $linkedList[0]);
+
+        $linkedList[2] = 'no data';
+        $this->assertEquals(1, $linkedList->getLength());
+        $this->assertEquals(null, $linkedList[2]);
+
+        $linkedList[1] = 'second';
+        $this->assertEquals(2, $linkedList->getLength());
+        $this->assertEquals('second', $linkedList[3]);
+    }
+
+    /**
+     * @test Test iterator.
+     * @covers \Alan\Structure\LinkedList\LinkedList::current
+     * @covers \Alan\Structure\LinkedList\LinkedList::key
+     * @covers \Alan\Structure\LinkedList\LinkedList::next
+     * @covers \Alan\Structure\LinkedList\LinkedList::rewind
+     * @covers \Alan\Structure\LinkedList\LinkedList::valid
+     */
+    public function testIterator()
+    {
+
+    }
 }
