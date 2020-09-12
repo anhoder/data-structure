@@ -170,6 +170,7 @@ class LinkedListTest extends TestCase
     /**
      * @test Test hasCircle method.
      * @covers \Alan\Structure\LinkedList\LinkedList::hasCircle
+     * @covers \Alan\Structure\LinkedList\LinkedList::count
      */
     public function testHasCircle()
     {
