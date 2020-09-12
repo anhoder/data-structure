@@ -1,5 +1,6 @@
 <?php
 
+use Alan\Structure\Exception\CircularListException;
 use Alan\Structure\LinkedList\LinkedList;
 use Alan\Structure\LinkedList\Node;
 use PHPUnit\Framework\TestCase;
@@ -164,6 +165,28 @@ class LinkedListTest extends TestCase
         $linkedList->clear();
         $this->assertEquals(0, $linkedList->getLength());
         $this->assertEquals(null, $linkedList->get(0));
+    }
+
+    /**
+     * @test Test hasCircle method.
+     * @covers \Alan\Structure\LinkedList\LinkedList::hasCircle
+     */
+    public function testHasCircle()
+    {
+        // Dont has circle.
+        $first = new Node('first');
+        $this->assertEquals(false, LinkedList::hasCircle($first));
+
+        // Has circle.
+        $second = new Node('second');
+        $third = new Node('third');
+        $first->setNext($second);
+        $second->setNext($third);
+        $third->setNext($first);
+        $this->assertEquals(true, LinkedList::hasCircle($first));
+
+        $this->expectException(CircularListException::class);
+        LinkedList::count($first);
     }
 
     /**

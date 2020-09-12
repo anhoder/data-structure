@@ -2,6 +2,7 @@
 
 namespace Alan\Structure\LinkedList;
 
+use Alan\Structure\Exception\CircularListException;
 use ArrayAccess;
 use Iterator;
 
@@ -64,9 +65,11 @@ class LinkedList implements ArrayAccess, Iterator
      * Count next nodes.
      * @param Node $node
      * @return int
+     * @throws CircularListException
      */
     public static function count(Node $node)
     {
+        if (self::hasCircle($node)) throw new CircularListException($node);
         $length = 0;
         while (!is_null($node)) {
             ++$length;
@@ -74,6 +77,31 @@ class LinkedList implements ArrayAccess, Iterator
         }
 
         return $length;
+    }
+
+    /**
+     * Check whether list headed by the node has circle.
+     * @param Node $node
+     * @return bool
+     */
+    public static function hasCircle(Node $node)
+    {
+        if (is_null($node)) return false;
+
+        $slowPointer = $fastPointer = $node;
+        while (!is_null($fastPointer) && !is_null($slowPointer)) {
+            // slow pointer move 1 step.
+            $slowPointer = $slowPointer->getNext();
+
+            // fast pointer move 2 step.
+            $fastPointer = $fastPointer->getNext();
+            if (is_null($fastPointer)) break;
+            $fastPointer = $fastPointer->getNext();
+
+            if ($fastPointer === $slowPointer) return true;
+        }
+
+        return false;
     }
 
     /**

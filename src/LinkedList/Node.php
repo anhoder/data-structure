@@ -68,4 +68,14 @@ class Node
         $this->data = $data;
         return true;
     }
+
+    /**
+     * To string
+     * @return string
+     */
+    public function __toString()
+    {
+        $className = static::class;
+        return "{$className}({$this->data})";
+    }
 }
