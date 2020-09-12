@@ -313,7 +313,7 @@ class LinkedList implements ArrayAccess, Iterator
      */
     public function valid()
     {
-        return $this->cursor < $this->length - 1 && $this->cursor >= 0;
+        return $this->cursor <= $this->length - 1 && $this->cursor >= 0;
     }
 
     /**
@@ -332,7 +332,7 @@ class LinkedList implements ArrayAccess, Iterator
      */
     public function offsetExists($offset)
     {
-        return $offset < $this->length - 1 && $offset >= 0;
+        return $offset <= $this->length - 1 && $offset >= 0;
     }
 
     /**

@@ -199,6 +199,19 @@ class LinkedListTest extends TestCase
      */
     public function testIterator()
     {
+        $linkedList = new LinkedList();
+        $linkedList->add('first')->add('second')->add('third')->add('fourth');
 
+        $expect = [
+            'first',
+            'second',
+            'third',
+            'fourth',
+        ];
+        $i = 0;
+        foreach ($linkedList as $i => $item) {
+            $this->assertEquals($expect[$i], $item);
+        }
+        $this->assertEquals($i + 1, $linkedList->getLength());
     }
 }
