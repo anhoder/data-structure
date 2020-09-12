@@ -220,6 +220,10 @@ class LinkedList implements ArrayAccess, Iterator
      */
     public function set(int $index, $data)
     {
+        if ($index == $this->length) {
+            $this->add($data);
+            return $this;
+        }
         $node = $this->getNode($index);
         if (is_null($node)) return false;
 

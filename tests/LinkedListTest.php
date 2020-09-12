@@ -186,7 +186,7 @@ class LinkedListTest extends TestCase
 
         $linkedList[1] = 'second';
         $this->assertEquals(2, $linkedList->getLength());
-        $this->assertEquals('second', $linkedList[3]);
+        $this->assertEquals('second', $linkedList[1]);
     }
 
     /**
