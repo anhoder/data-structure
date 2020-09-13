@@ -25,32 +25,39 @@ class LinkedListTest extends TestCase
         $this->assertEquals('first', $linkedList->get(0));
         $this->assertEquals(1, $linkedList->getLength());
         $this->assertEquals($first, $linkedList->getHead());
+        $this->assertEquals($first, $linkedList->getTail());
 
         // Out of bounds.
         $linkedList->insertNode(2, new Node('no insert'));
         $this->assertEquals(null, $linkedList->get(2));
         $this->assertEquals(1, $linkedList->getLength());
+        $this->assertEquals($first, $linkedList->getTail());
 
         // Insert.
         $linkedList->insertNode(1, $second = new Node('second'));
         $this->assertEquals('second', $linkedList->get(1));
         $this->assertEquals(2, $linkedList->getLength());
+        $this->assertEquals($second, $linkedList->getTail());
 
         // Insert data, out of bounds.
         $linkedList->insert(10, 'no insert');
         $this->assertEquals(null, $linkedList->get(10));
         $this->assertEquals(2, $linkedList->getLength());
+        $this->assertEquals('second', $linkedList->getTail()->getData());
 
         // Insert data.
         $linkedList->insert(2, 'third');
         $this->assertEquals('third', $linkedList->get(2));
         $this->assertEquals(3, $linkedList->getLength());
+        $this->assertEquals('third', $linkedList->getTail()->getData());
 
         // Get node.
         $this->assertEquals($second, $linkedList->getNode(1));
         $this->assertEquals(null, $linkedList->getNode(10));
 
-
+        // Insert to first.
+        $linkedList->insert(0, 'now first');
+        $this->assertEquals('now first', $linkedList->get(0));
     }
 
     /**
@@ -74,6 +81,7 @@ class LinkedListTest extends TestCase
         $this->assertEquals(1, $linkedList->getLength());
         $this->assertEquals(null, $linkedList->getNode(99));
         $this->assertEquals($first, $linkedList->getHead());
+        $this->assertEquals($first, $linkedList->getTail());
 
 
         // Add.
@@ -81,6 +89,7 @@ class LinkedListTest extends TestCase
         $this->assertEquals('seconds', $linkedList->get(1));
         $this->assertEquals(2, $linkedList->getLength());
         $this->assertEquals(null, $linkedList->get(99));
+        $this->assertEquals('seconds', $linkedList->getTail()->getData());
     }
 
     /**
@@ -89,6 +98,7 @@ class LinkedListTest extends TestCase
      * @covers \Alan\Structure\LinkedList\LinkedList::set
      * @covers \Alan\Structure\LinkedList\LinkedList::get
      * @covers \Alan\Structure\LinkedList\LinkedList::count
+     * @throws CircularListException
      */
     public function testSet()
     {
@@ -100,6 +110,7 @@ class LinkedListTest extends TestCase
         $this->assertEquals(1, $linkedList->getLength());
         $this->assertEquals($first, $linkedList->getHead());
         $this->assertEquals($first, $linkedList->getNode(0));
+        $this->assertEquals('first', $linkedList->getTail()->getData());
 
         // no set
         $noSet = new Node('no set');
@@ -111,19 +122,22 @@ class LinkedListTest extends TestCase
         $replace->setNext(new Node('next'));
         $replace->getNext()->setNext(new Node('next2'));
         $linkedList->setNode(0, $replace);
-        $this->assertEquals(3, LinkedList::count($replace));
+        $this->assertEquals(3, Node::count($replace));
         $this->assertEquals(3, $linkedList->getLength());
+        $this->assertEquals('next2', $linkedList->getTail()->getData());
 
         // replace 2
         $replace2 = new Node('replace2');
         $linkedList->setNode(1, $replace2);
         $this->assertEquals('replace2', $linkedList->get(1));
         $this->assertEquals(2, $linkedList->getLength());
+        $this->assertEquals('replace2', $linkedList->getTail()->getData());
 
         // set data.
         $linkedList->set(1, 'replace3');
         $this->assertEquals('replace3', $linkedList->get(1));
         $this->assertEquals(2, $linkedList->getLength());
+        $this->assertEquals('replace3', $linkedList->getTail()->getData());
     }
 
     /**
@@ -137,18 +151,24 @@ class LinkedListTest extends TestCase
 
         $linkedList->add('first')->add('second')->add('third');
         $this->assertEquals(3, $linkedList->getLength());
+        $this->assertEquals('third', $linkedList->getTail()->getData());
 
         // Remove.
         $linkedList->remove(1);
         $this->assertEquals(2, $linkedList->getLength());
         $this->assertEquals('first', $linkedList->get(0));
         $this->assertEquals('third', $linkedList->get(1));
+        $this->assertEquals('third', $linkedList->getTail()->getData());
 
         // Remove node.
         $linkedList->removeNode(0);
         $this->assertEquals(1, $linkedList->getLength());
         $this->assertEquals('third', $linkedList->get(0));
         $this->assertEquals(null, $linkedList->get(1));
+        $this->assertEquals('third', $linkedList->getTail()->getData());
+
+        $linkedList->removeNode(0);
+        $this->assertEquals(null, $linkedList->getTail());
     }
 
     /**
@@ -165,6 +185,8 @@ class LinkedListTest extends TestCase
         $linkedList->clear();
         $this->assertEquals(0, $linkedList->getLength());
         $this->assertEquals(null, $linkedList->get(0));
+        $this->assertEquals(null, $linkedList->getHead());
+        $this->assertEquals(null, $linkedList->getTail());
     }
 
     /**
@@ -176,7 +198,7 @@ class LinkedListTest extends TestCase
     {
         // Dont has circle.
         $first = new Node('first');
-        $this->assertEquals(false, LinkedList::hasCircle($first));
+        $this->assertEquals(false, Node::hasCircle($first));
 
         // Has circle.
         $second = new Node('second');
@@ -184,10 +206,10 @@ class LinkedListTest extends TestCase
         $first->setNext($second);
         $second->setNext($third);
         $third->setNext($first);
-        $this->assertEquals(true, LinkedList::hasCircle($first));
+        $this->assertEquals(true, Node::hasCircle($first));
 
         $this->expectException(CircularListException::class);
-        LinkedList::count($first);
+        Node::count($first);
     }
 
     /**

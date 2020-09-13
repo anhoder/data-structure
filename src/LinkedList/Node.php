@@ -1,6 +1,16 @@
 <?php
+/**
+ * The file is part of the data-structure.
+ *
+ * (c) alan <alan1766447919@gmail.com>.
+ *
+ * 2020/9/13 12:05 下午
+ */
 
 namespace Alan\Structure\LinkedList;
+
+use Alan\Structure\Traits\Data;
+use Alan\Structure\Traits\Next;
 
 /**
  * Class Node
@@ -8,15 +18,8 @@ namespace Alan\Structure\LinkedList;
  */
 class Node
 {
-    /**
-     * @var Node
-     */
-    private $next;
-
-    /**
-     * @var mixed
-     */
-    private $data;
+    use Data;
+    use Next;
 
     /**
      * Node constructor.
@@ -29,53 +32,4 @@ class Node
         $this->next = $next;
     }
 
-    /**
-     * Get next node.
-     * @return Node
-     */
-    public function getNext()
-    {
-        return $this->next;
-    }
-
-    /**
-     * Set next node.
-     * @param Node $next
-     * @return true
-     */
-    public function setNext(Node $next = null)
-    {
-        $this->next = $next;
-        return true;
-    }
-
-    /**
-     * Get data.
-     * @return mixed
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * Set data.
-     * @param mixed $data
-     * @return true
-     */
-    public function setData($data)
-    {
-        $this->data = $data;
-        return true;
-    }
-
-    /**
-     * To string
-     * @return string
-     */
-    public function __toString()
-    {
-        $className = static::class;
-        return "{$className}({$this->data})";
-    }
 }

@@ -1,4 +1,11 @@
 <?php
+/**
+ * The file is part of the data-structure.
+ *
+ * (c) alan <alan1766447919@gmail.com>.
+ *
+ * 2020/9/13 12:05 下午
+ */
 
 namespace Alan\Structure\Exception;
 

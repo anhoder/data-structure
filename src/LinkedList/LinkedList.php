@@ -1,4 +1,11 @@
 <?php
+/**
+ * The file is part of the data-structure.
+ *
+ * (c) alan <alan1766447919@gmail.com>.
+ *
+ * 2020/9/13 12:05 下午
+ */
 
 namespace Alan\Structure\LinkedList;
 
@@ -13,6 +20,12 @@ class LinkedList implements ArrayAccess, Iterator
      * @var Node
      */
     private $head;
+
+    /**
+     * Last node of list.
+     * @var Node
+     */
+    private $tail;
 
     /**
      * Cursor of the list.
@@ -38,18 +51,28 @@ class LinkedList implements ArrayAccess, Iterator
     public function __construct()
     {
         $this->head = null;
+        $this->tail = null;
         $this->cursorNode = $this->head;
         $this->cursor = 0;
         $this->length = 0;
     }
 
     /**
-     * Get head of list..
+     * Get head of list.
      * @return Node|null
      */
     public function getHead()
     {
         return $this->head;
+    }
+
+    /**
+     * Get tail of list.
+     * @return Node|null
+     */
+    public function getTail()
+    {
+        return $this->tail;
     }
 
     /**
@@ -59,49 +82,6 @@ class LinkedList implements ArrayAccess, Iterator
     public function getLength()
     {
         return $this->length;
-    }
-
-    /**
-     * Count next nodes.
-     * @param Node $node
-     * @return int
-     * @throws CircularListException
-     */
-    public static function count(Node $node)
-    {
-        if (self::hasCircle($node)) throw new CircularListException($node);
-        $length = 0;
-        while (!is_null($node)) {
-            ++$length;
-            $node = $node->getNext();
-        }
-
-        return $length;
-    }
-
-    /**
-     * Check whether list headed by the node has circle.
-     * @param Node $node
-     * @return bool
-     */
-    public static function hasCircle(Node $node)
-    {
-        if (is_null($node)) return false;
-
-        $slowPointer = $fastPointer = $node;
-        while (!is_null($fastPointer) && !is_null($slowPointer)) {
-            // slow pointer move 1 step.
-            $slowPointer = $slowPointer->getNext();
-
-            // fast pointer move 2 step.
-            $fastPointer = $fastPointer->getNext();
-            if (is_null($fastPointer)) break;
-            $fastPointer = $fastPointer->getNext();
-
-            if ($fastPointer === $slowPointer) return true;
-        }
-
-        return false;
     }
 
     /**
@@ -127,12 +107,14 @@ class LinkedList implements ArrayAccess, Iterator
      * @param int $index start with 0
      * @param Node $node
      * @return false|LinkedList
+     * @throws CircularListException
      */
     public function setNode(int $index, Node $node)
     {
         if ($index == 0) {
             $this->head = $node;
-            $this->length = self::count($node);
+            $this->tail = Node::getLast($node);
+            $this->length = Node::count($node);
             return $this;
         }
 
@@ -144,9 +126,10 @@ class LinkedList implements ArrayAccess, Iterator
         $objNode = $prevNode->getNext();
 
         // update length
-        $objCount = self::count($objNode);
-        $count = self::count($node);
+        $objCount = Node::count($objNode);
+        $count = Node::count($node);
         $this->length = $this->length + $count - $objCount;
+        $this->tail = Node::getLast($node);
 
         $prevNode->setNext($node);
 
@@ -161,9 +144,10 @@ class LinkedList implements ArrayAccess, Iterator
      */
     public function insertNode(int $index, Node $node)
     {
-        if ($index == 0 && $this->length == 0) {
-            $node->setNext(null);
+        if ($index == 0) {
+            $node->setNext($this->head);
             $this->head = $node;
+            if ($this->length == 0) $this->tail = $node;
             ++$this->length;
 
             return $this;
@@ -177,6 +161,10 @@ class LinkedList implements ArrayAccess, Iterator
         $node->setNext($nextNode);
         $prevNode->setNext($node);
 
+        // Insert to last of list.
+        if ($index == $this->length) {
+            $this->tail = $node;
+        }
         ++$this->length;
 
         return $this;
@@ -192,13 +180,14 @@ class LinkedList implements ArrayAccess, Iterator
         $node->setNext(null);
         if ($this->length == 0) {
             $this->head = $node;
+            $this->tail = $node;
             ++$this->length;
 
             return $this;
         }
 
-        $last = $this->getNode($this->length - 1);
-        $last->setNext($node);
+        $this->tail->setNext($node);
+        $this->tail = $node;
         ++$this->length;
 
         return $this;
@@ -214,6 +203,7 @@ class LinkedList implements ArrayAccess, Iterator
         if ($index > $this->length - 1 || $index < 0) return false;
         if ($index == 0) {
             $this->head = $this->head->getNext();
+            if ($this->head == null) $this->tail = $this->head;
             --$this->length;
 
             return $this;
@@ -222,6 +212,9 @@ class LinkedList implements ArrayAccess, Iterator
         $prev = $this->getNode($index - 1);
         $delete = $prev->getNext();
         $prev->setNext($delete->getNext());
+        if ($index == $this->length - 1) {
+            $this->tail = $prev;
+        }
         --$this->length;
 
         return $this;
@@ -300,6 +293,7 @@ class LinkedList implements ArrayAccess, Iterator
     public function clear()
     {
         $this->head = null;
+        $this->tail = null;
         $this->length = 0;
 
         return $this;
