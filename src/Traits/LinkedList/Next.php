@@ -7,7 +7,7 @@
  * 2020/9/13 12:31 下午
  */
 
-namespace Alan\Structure\Traits;
+namespace Alan\Structure\Traits\LinkedList;
 
 use Alan\Structure\Exception\CircularListException;
 

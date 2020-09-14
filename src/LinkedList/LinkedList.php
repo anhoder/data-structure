@@ -144,6 +144,7 @@ class LinkedList implements ArrayAccess, Iterator
      */
     public function insertNode(int $index, Node $node)
     {
+        if (is_null($node)) return false;
         if ($index == 0) {
             $node->setNext($this->head);
             $this->head = $node;
@@ -173,10 +174,11 @@ class LinkedList implements ArrayAccess, Iterator
     /**
      * Add node to the end.
      * @param Node $node
-     * @return LinkedList
+     * @return LinkedList|false
      */
     public function addNode(Node $node)
     {
+        if (is_null($node)) return false;
         $node->setNext(null);
         if ($this->length == 0) {
             $this->head = $node;
@@ -294,6 +296,8 @@ class LinkedList implements ArrayAccess, Iterator
     {
         $this->head = null;
         $this->tail = null;
+        $this->cursor = 0;
+        $this->cursorNode = null;
         $this->length = 0;
 
         return $this;

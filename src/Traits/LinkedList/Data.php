@@ -7,7 +7,7 @@
  * 2020/9/13 12:38 下午
  */
 
-namespace Alan\Structure\Traits;
+namespace Alan\Structure\Traits\LinkedList;
 
 trait Data
 {

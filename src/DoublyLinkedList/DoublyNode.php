@@ -9,9 +9,9 @@
 
 namespace Alan\Structure\DoublyLinkedList;
 
-use Alan\Structure\Traits\Data;
-use Alan\Structure\Traits\Next;
-use Alan\Structure\Traits\Previous;
+use Alan\Structure\Traits\LinkedList\Data;
+use Alan\Structure\Traits\LinkedList\Next;
+use Alan\Structure\Traits\LinkedList\Previous;
 
 class DoublyNode
 {
