@@ -9,6 +9,9 @@
 
 namespace Alan\Structure\CircularLinkedList;
 
+use Alan\Structure\DoublyLinkedList\DoublyLinkedList;
+use Alan\Structure\DoublyLinkedList\DoublyNode;
+
 /**
  * Doubly circular linked list.
  * Class CircularLinkedList
@@ -16,7 +19,34 @@ namespace Alan\Structure\CircularLinkedList;
  */
 class CircularLinkedList
 {
-    // doubly
+    /**
+     * @var DoublyLinkedList
+     */
+    private $doublyLinkedList;
+
+    /**
+     * CircularLinkedList constructor.
+     */
+    public function __construct()
+    {
+        $this->doublyLinkedList = new DoublyLinkedList();
+    }
+
+    /**
+     * Add data
+     * @param $data
+     * @return $this
+     */
+    public function add($data)
+    {
+        $this->doublyLinkedList->add($data);
+        $head = $this->doublyLinkedList->getHead();
+        $tail = $this->doublyLinkedList->getTail();
+        $head->setPrev($tail);
+        $tail->setNext($head);
+
+        return $this;
+    }
 
     // add
     // insert
@@ -25,6 +55,8 @@ class CircularLinkedList
     // get
     // getDistance
     // getLength
+    // getHead
+    // getTail
 
     // ArrayAccess
     // Iterator
