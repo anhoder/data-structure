@@ -19,31 +19,31 @@ class DoublyLinkedList implements ArrayAccess, Iterator
      * First node of the list.
      * @var DoublyNode
      */
-    private $head;
+    protected $head;
 
     /**
      * Last node of list.
      * @var DoublyNode
      */
-    private $tail;
+    protected $tail;
 
     /**
      * Cursor of the list.
      * @var int
      */
-    private $cursor;
+    protected $cursor;
 
     /**
      * Cursor node of list.
      * @var DoublyNode
      */
-    private $cursorNode;
+    protected $cursorNode;
 
     /**
      * The length of list.
      * @var int
      */
-    private $length;
+    protected $length;
 
     /**
      * DoublyLinkedList constructor.

@@ -17,47 +17,121 @@ use Alan\Structure\DoublyLinkedList\DoublyNode;
  * Class CircularLinkedList
  * @package Alan\Structure\CircularLinkedList
  */
-class CircularLinkedList
+class CircularLinkedList extends DoublyLinkedList
 {
     /**
-     * @var DoublyLinkedList
-     */
-    private $doublyLinkedList;
-
-    /**
-     * CircularLinkedList constructor.
-     */
-    public function __construct()
-    {
-        $this->doublyLinkedList = new DoublyLinkedList();
-    }
-
-    /**
-     * Add data
-     * @param $data
+     * Add node to the end of list.
+     * @param DoublyNode $node
      * @return $this
      */
-    public function add($data)
+    public function addNode(DoublyNode $node)
     {
-        $this->doublyLinkedList->add($data);
-        $head = $this->doublyLinkedList->getHead();
-        $tail = $this->doublyLinkedList->getTail();
-        $head->setPrev($tail);
-        $tail->setNext($head);
+        $res = parent::addNode($node);
+        if ($res !== false) $this->updateLinkOfCircle();
 
         return $this;
     }
 
-    // add
-    // insert
-    // remove
-    // set
-    // get
-    // getDistance
-    // getLength
-    // getHead
-    // getTail
+    /**
+     * Insert node into list.
+     * @param int $index
+     * @param DoublyNode $node
+     * @return $this|CircularLinkedList|false
+     */
+    public function insertNode(int $index, DoublyNode $node)
+    {
+        $isHeadOrTail = $index == 0 || $index == $this->length;
+        $res = parent::insertNode($index, $node);
 
-    // ArrayAccess
-    // Iterator
+        if ($res !== false && $isHeadOrTail) $this->updateLinkOfCircle();
+
+        return $res;
+    }
+
+    /**
+     * Remove node of list.
+     * @param int $index
+     * @return CircularLinkedList|false|void
+     */
+    public function removeNode(int $index)
+    {
+        $isHeadOrTail = $index == 0 || $index == $this->length - 1;
+        $res = parent::removeNode($index);
+        if ($res !== false && $isHeadOrTail) $this->updateLinkOfCircle();
+
+        return $res;
+    }
+
+    /**
+     * Set node.
+     * @param int $index
+     * @param DoublyNode $node
+     * @return CircularLinkedList|false
+     * @throws \Alan\Structure\Exception\CircularListException
+     */
+    public function setNode(int $index, DoublyNode $node)
+    {
+        $res = parent::setNode($index, $node);
+        if ($res) $this->updateLinkOfCircle();
+
+        return $res;
+    }
+
+    /**
+     * Get node in index.
+     * @param int $index
+     * @return DoublyNode|null
+     */
+    public function getNode(int $index)
+    {
+        if ($this->cursor == 0 || is_null($this->cursorNode)) {
+            $this->cursor = $index;
+            $this->cursorNode = parent::getNode($index);
+
+            return $this->cursorNode;
+        }
+
+        $distance = $this->getDistance($this->cursor, $index);
+        $absDistance = abs($distance);
+
+        for ($i = 0; $i < $absDistance; ++$i) {
+            if ($distance > 0) $this->cursorNode = $this->cursorNode->getNext();
+            else $this->cursorNode = $this->cursorNode->getPrev();
+        }
+
+        $this->cursor = $index;
+
+        return $this->cursorNode;
+    }
+
+    /**
+     * Get distance between two item.
+     * @param int $start
+     * @param int $end
+     * @return int
+     */
+    public function getDistance(int $start, int $end)
+    {
+        if ($end - $start > 0) {
+            $forwardDistance = $end - $start;
+            $backwardDistance = $this->length - 1 - $end + $start;
+        } else {
+            $backwardDistance = $start - $end;
+            $forwardDistance = $this->length - 1 - $start + $end;
+        }
+
+        if ($forwardDistance <= $backwardDistance) return $forwardDistance;
+        else return -$backwardDistance;
+    }
+
+    /**
+     * Update link of circular linked list.
+     */
+    protected function updateLinkOfCircle()
+    {
+//        $head = $this->getHead();
+//        $tail = $this->getTail();
+        $this->head->setPrev($this->tail);
+        $this->tail->setNext($this->head);
+    }
 }

@@ -19,31 +19,31 @@ class LinkedList implements ArrayAccess, Iterator
      * First node of list.
      * @var Node
      */
-    private $head;
+    protected $head;
 
     /**
      * Last node of list.
      * @var Node
      */
-    private $tail;
+    protected $tail;
 
     /**
      * Cursor of the list.
      * @var int
      */
-    private $cursor;
+    protected $cursor;
 
     /**
      * Cursor node of the list.
      * @var Node
      */
-    private $cursorNode;
+    protected $cursorNode;
 
     /**
      * Length of the list.
      * @var int
      */
-    private $length;
+    protected $length;
 
     /**
      * LinkedList constructor.
