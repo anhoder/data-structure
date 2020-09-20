@@ -114,7 +114,7 @@ class LinkedList implements ArrayAccess, Iterator
         if ($index == 0) {
             $this->head = $node;
             $this->tail = Node::getLast($node);
-            $this->length = Node::count($node);
+            $this->length = Node::count($node, $this->head);
             return $this;
         }
 
@@ -126,8 +126,8 @@ class LinkedList implements ArrayAccess, Iterator
         $objNode = $prevNode->getNext();
 
         // update length
-        $objCount = Node::count($objNode);
-        $count = Node::count($node);
+        $objCount = Node::count($objNode, $this->head);
+        $count = Node::count($node, $this->head);
         $this->length = $this->length + $count - $objCount;
         $this->tail = Node::getLast($node);
 

@@ -84,6 +84,7 @@ class CircularLinkedList extends DoublyLinkedList
      */
     public function getNode(int $index)
     {
+        if ($index > $this->length - 1) return null;
         if ($this->cursor == 0 || is_null($this->cursorNode)) {
             $this->cursor = $index;
             $this->cursorNode = parent::getNode($index);

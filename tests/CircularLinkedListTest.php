@@ -213,8 +213,6 @@ class CircularLinkedListTest extends TestCase
         $this->assertEquals(null, $linkedList->get(0));
         $this->assertEquals(null, $linkedList->getHead());
         $this->assertEquals(null, $linkedList->getTail());
-        $this->assertEquals(null, $linkedList->getTail()->getNext());
-        $this->assertEquals(null, $linkedList->getHead()->getPrev());
     }
 
     /**
