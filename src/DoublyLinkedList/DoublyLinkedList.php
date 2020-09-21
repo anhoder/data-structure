@@ -126,7 +126,7 @@ class DoublyLinkedList implements ArrayAccess, Iterator
         if ($index == 0) {
             $this->head = $node;
             $this->tail = DoublyNode::getLast($node);
-            $this->length = DoublyNode::count($node, $this->head);
+            $this->length = DoublyNode::count($node);
             return $this;
         }
 
@@ -138,8 +138,8 @@ class DoublyLinkedList implements ArrayAccess, Iterator
         $objNode = $prevNode->getNext();
 
         // update length
-        $objCount = DoublyNode::count($objNode, $this->head);
-        $count = DoublyNode::count($node, $this->head);
+        $objCount = DoublyNode::count($objNode);
+        $count = DoublyNode::count($node);
         $this->length = $this->length + $count - $objCount;
         $this->tail = DoublyNode::getLast($node);
 

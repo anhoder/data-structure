@@ -66,15 +66,12 @@ class CircularLinkedList extends DoublyLinkedList
      * Set node.
      * @param int $index
      * @param DoublyNode $node
-     * @return CircularLinkedList|false
-     * @throws \Alan\Structure\Exception\CircularListException
+     * @throws \Exception
+     * @removed
      */
     public function setNode(int $index, DoublyNode $node)
     {
-        $res = parent::setNode($index, $node);
-        if ($res) $this->updateLinkOfCircle();
-
-        return $res;
+        throw new \Exception('The method is removed');
     }
 
     /**
@@ -115,13 +112,13 @@ class CircularLinkedList extends DoublyLinkedList
     {
         if ($end - $start > 0) {
             $forwardDistance = $end - $start;
-            $backwardDistance = $this->length - 1 - $end + $start;
+            $backwardDistance = $this->length - $end + $start;
         } else {
             $backwardDistance = $start - $end;
-            $forwardDistance = $this->length - 1 - $start + $end;
+            $forwardDistance = $this->length - $start + $end;
         }
 
-        if ($forwardDistance <= $backwardDistance) return $forwardDistance;
+        if (abs($forwardDistance) <= abs($backwardDistance)) return $forwardDistance;
         else return -$backwardDistance;
     }
 

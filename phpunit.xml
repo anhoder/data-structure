@@ -9,5 +9,11 @@
     <testsuite name="LinkedListTest">
       <file>tests/LinkedListTest.php</file>
     </testsuite>
+    <testsuite name="DoublyLinkedListTest">
+      <file>tests/DoublyLinkedListTest.php</file>
+    </testsuite>
+    <testsuite name="CircularLinkedListTest">
+      <file>tests/CircularLinkedListTest.php</file>
+    </testsuite>
   </testsuites>
 </phpunit>

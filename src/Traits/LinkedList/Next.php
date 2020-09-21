@@ -75,15 +75,14 @@ trait Next
     /**
      * Count next nodes.
      * @param Next $node
-     * @param Next|null $head
      * @return int
      * @throws CircularListException
      */
-    public static function count(self $node, self $head = null)
+    public static function count(self $node)
     {
         if (self::hasCircle($node)) throw new CircularListException($node);
         $length = 0;
-        while (!is_null($node) && $node !== $head) {
+        while (!is_null($node)) {
             ++$length;
             $node = $node->getNext();
         }

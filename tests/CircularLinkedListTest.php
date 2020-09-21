@@ -59,7 +59,7 @@ class CircularLinkedListTest extends TestCase
         $this->assertEquals('third', $list->getHead()->getPrev()->getData());
 
         // Get node.
-        $this->assertEquals($second, $list->getNode(1));
+        $this->assertEquals($second->getData(), $list->getNode(1)->getData());
         $this->assertEquals(null, $list->getNode(10));
 
         // Insert to first.
@@ -107,56 +107,20 @@ class CircularLinkedListTest extends TestCase
 
     /**
      * @test Test set node.
-     * @covers \Alan\Structure\CircularLinkedList\CircularLinkedList::setNode
      * @covers \Alan\Structure\CircularLinkedList\CircularLinkedList::set
      * @covers \Alan\Structure\CircularLinkedList\CircularLinkedList::get
      * @covers \Alan\Structure\CircularLinkedList\CircularLinkedList::count
-     * @throws CircularListException
      */
     public function testSet()
     {
         $linkedList = new CircularLinkedList();
 
-        // set head
-        $first = new DoublyNode('first');
-        $linkedList->setNode(0, $first);
-        $this->assertEquals(1, $linkedList->getLength());
-        $this->assertEquals($first, $linkedList->getHead());
-        $this->assertEquals($first, $linkedList->getNode(0));
-        $this->assertEquals('first', $linkedList->getTail()->getData());
-        $this->assertEquals('first', $linkedList->getTail()->getNext()->getData());
-        $this->assertEquals('first', $linkedList->getHead()->getPrev()->getData());
-
-        // no set
-        $noSet = new DoublyNode('no set');
-        $linkedList->setNode(2, $noSet);
-        $this->assertEquals(1, $linkedList->getLength());
-
-        // replace
-        $replace = new DoublyNode('replace');
-        $replace->setNext(new DoublyNode('next'));
-        $replace->getNext()->setNext(new DoublyNode('next2'));
-        $linkedList->setNode(0, $replace);
-        $this->assertEquals(3, $linkedList->getLength());
-        $this->assertEquals('next2', $linkedList->getTail()->getData());
-        $this->assertEquals('replace', $linkedList->getTail()->getNext()->getData());
-        $this->assertEquals('next2', $linkedList->getHead()->getPrev()->getData());
-
-        // replace 2
-        $replace2 = new DoublyNode('replace2');
-        $linkedList->setNode(1, $replace2);
-        $this->assertEquals('replace2', $linkedList->get(1));
-        $this->assertEquals(2, $linkedList->getLength());
-        $this->assertEquals('replace2', $linkedList->getTail()->getData());
-        $this->assertEquals('replace', $linkedList->getTail()->getNext()->getData());
-        $this->assertEquals('replace2', $linkedList->getHead()->getPrev()->getData());
-
         // set data.
-        $linkedList->set(1, 'replace3');
+        $linkedList->set(0, 'replace3');
         $this->assertEquals('replace3', $linkedList->get(1));
-        $this->assertEquals(2, $linkedList->getLength());
+        $this->assertEquals(1, $linkedList->getLength());
         $this->assertEquals('replace3', $linkedList->getTail()->getData());
-        $this->assertEquals('replace', $linkedList->getTail()->getNext()->getData());
+        $this->assertEquals('replace3', $linkedList->getTail()->getNext()->getData());
         $this->assertEquals('replace3', $linkedList->getHead()->getPrev()->getData());
     }
 
