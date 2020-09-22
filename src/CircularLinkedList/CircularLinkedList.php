@@ -43,6 +43,10 @@ class CircularLinkedList extends DoublyLinkedList
         $isHeadOrTail = $index == 0 || $index == $this->length;
         $res = parent::insertNode($index, $node);
 
+        if ($index <= $this->cursor) {
+            ++$this->cursor;
+        }
+
         if ($res !== false && $isHeadOrTail) $this->updateLinkOfCircle();
 
         return $res;
@@ -57,6 +61,17 @@ class CircularLinkedList extends DoublyLinkedList
     {
         $isHeadOrTail = $index == 0 || $index == $this->length - 1;
         $res = parent::removeNode($index);
+        if ($isHeadOrTail) {
+            $this->head = $this->head->getPrev() === $this->head ? null : $this->head;
+            $this->tail = $this->tail->getNext() === $this->tail ? null : $this->tail;
+        }
+
+        if ($index < $this->cursor) {
+            --$this->cursor;
+        } elseif ($index == $this->cursor) {
+            $this->cursor = 0;
+            $this->cursorNode = $this->head;
+        }
         if ($res !== false && $isHeadOrTail) $this->updateLinkOfCircle();
 
         return $res;
@@ -129,7 +144,7 @@ class CircularLinkedList extends DoublyLinkedList
     {
 //        $head = $this->getHead();
 //        $tail = $this->getTail();
-        $this->head->setPrev($this->tail);
-        $this->tail->setNext($this->head);
+        if (!is_null($this->head)) $this->head->setPrev($this->tail);
+        if (!is_null($this->tail)) $this->tail->setNext($this->head);
     }
 }

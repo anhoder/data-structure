@@ -106,25 +106,6 @@ class CircularLinkedListTest extends TestCase
     }
 
     /**
-     * @test Test set node.
-     * @covers \Alan\Structure\CircularLinkedList\CircularLinkedList::set
-     * @covers \Alan\Structure\CircularLinkedList\CircularLinkedList::get
-     * @covers \Alan\Structure\CircularLinkedList\CircularLinkedList::count
-     */
-    public function testSet()
-    {
-        $linkedList = new CircularLinkedList();
-
-        // set data.
-        $linkedList->set(0, 'replace3');
-        $this->assertEquals('replace3', $linkedList->get(1));
-        $this->assertEquals(1, $linkedList->getLength());
-        $this->assertEquals('replace3', $linkedList->getTail()->getData());
-        $this->assertEquals('replace3', $linkedList->getTail()->getNext()->getData());
-        $this->assertEquals('replace3', $linkedList->getHead()->getPrev()->getData());
-    }
-
-    /**
      * @test Test remove.
      * @covers \Alan\Structure\CircularLinkedList\CircularLinkedList::remove
      * @covers \Alan\Structure\CircularLinkedList\CircularLinkedList::removeNode
