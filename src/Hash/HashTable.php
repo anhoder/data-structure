@@ -62,7 +62,9 @@ abstract class HashTable implements HashTableInterface
      */
     public function current()
     {
+        if (is_null($this->cursorBucket)) $this->next();
 
+        return $this->cursorBucket->getValue();
     }
 
     /**
@@ -70,7 +72,16 @@ abstract class HashTable implements HashTableInterface
      */
     public function next()
     {
-        ++$this->cursor;
+        if (!is_null($this->cursorBucket) && !is_null($this->cursorBucket->getNext())) {
+            $this->cursorBucket = $this->cursorBucket->getNext();
+            return;
+        }
+
+        $usedLength = count($this->usedIndexes);
+        while (is_null($this->cursorBucket) && $this->cursor < $usedLength - 1) {
+            if (isset($this->items[$this->cursor])) $this->cursorBucket = $this->items[$this->cursor];
+            else ++$this->cursor;
+        }
     }
 
     /**
@@ -78,7 +89,7 @@ abstract class HashTable implements HashTableInterface
      */
     public function key()
     {
-
+        return $this->cursorBucket->getKey();
     }
 
     /**
@@ -86,7 +97,7 @@ abstract class HashTable implements HashTableInterface
      */
     public function valid()
     {
-        // TODO: Implement valid() method.
+        return $this->cursor != count($this->usedIndexes) || !is_null($this->cursorBucket);
     }
 
     /**
@@ -94,7 +105,8 @@ abstract class HashTable implements HashTableInterface
      */
     public function rewind()
     {
-        // TODO: Implement rewind() method.
+        $this->cursorBucket = null;
+        $this->cursor = 0;
     }
 
     /**

@@ -80,7 +80,7 @@ class Bucket
     /**
      * @return Bucket
      */
-    public function getNext(): Bucket
+    public function getNext()
     {
         return $this->next;
     }
