@@ -7,7 +7,7 @@
  * 2020/9/30 9:49 上午
  */
 
-namespace Alan\Structure\Hash;
+namespace Alan\Structure\HashTable;
 
 class Bucket
 {

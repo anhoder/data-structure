@@ -7,7 +7,7 @@
  * 2020/9/30 9:38 上午
  */
 
-namespace Alan\Structure\Hash;
+namespace Alan\Structure\HashTable;
 
 
 abstract class HashTable implements HashTableInterface
@@ -49,7 +49,7 @@ abstract class HashTable implements HashTableInterface
      * HashTable constructor.
      * @param int $cap
      */
-    public function __construct(int $cap)
+    public function __construct(int $cap = 64)
     {
         $this->length = 0;
         $this->cursor = 0;
@@ -62,8 +62,6 @@ abstract class HashTable implements HashTableInterface
      */
     public function current()
     {
-        if (is_null($this->cursorBucket)) $this->next();
-
         return $this->cursorBucket->getValue();
     }
 
@@ -72,15 +70,11 @@ abstract class HashTable implements HashTableInterface
      */
     public function next()
     {
-        if (!is_null($this->cursorBucket) && !is_null($this->cursorBucket->getNext())) {
-            $this->cursorBucket = $this->cursorBucket->getNext();
-            return;
-        }
+        if (!is_null($this->cursorBucket)) $this->cursorBucket = $this->cursorBucket->getNext();
 
-        $usedLength = count($this->usedIndexes);
-        while (is_null($this->cursorBucket) && $this->cursor < $usedLength - 1) {
-            if (isset($this->items[$this->cursor])) $this->cursorBucket = $this->items[$this->cursor];
-            else ++$this->cursor;
+        if (is_null($this->cursorBucket) && $this->cursor < count($this->usedIndexes) - 1 ) {
+            ++$this->cursor;
+            $this->cursorBucket = $this->items[$this->usedIndexes[$this->cursor]];
         }
     }
 
@@ -97,7 +91,7 @@ abstract class HashTable implements HashTableInterface
      */
     public function valid()
     {
-        return $this->cursor != count($this->usedIndexes) || !is_null($this->cursorBucket);
+        return $this->cursor != count($this->usedIndexes) - 1 || !is_null($this->cursorBucket);
     }
 
     /**
@@ -105,8 +99,8 @@ abstract class HashTable implements HashTableInterface
      */
     public function rewind()
     {
-        $this->cursorBucket = null;
         $this->cursor = 0;
+        $this->cursorBucket = $this->items[$this->usedIndexes[$this->cursor]] ?? null;
     }
 
     /**
@@ -188,27 +182,42 @@ abstract class HashTable implements HashTableInterface
      */
     public function set(string $key, $data)
     {
+        if ($this->length > ($this->cap>>1) + $this->cap) $this->expand();
+
         $hashCode = $this->hash($key);
-        $index = $hashCode % $this->cap;
+        $bucket = new Bucket($hashCode, $key, $data);
+        return $this->setBucket($bucket);
+    }
+
+    /**
+     * Set bucket.
+     * @param Bucket $bucket
+     * @return bool
+     */
+    public function setBucket(Bucket $bucket)
+    {
+        $index = $bucket->getHashCode() % $this->cap;
         ++$this->length;
 
         if (!isset($this->items[$index])) {
-            $this->items[$index] = new Bucket($hashCode, $key, $data);
+            $this->items[$index] = $bucket;
             $this->usedIndexes[] = $index;
             return true;
         }
 
-        $bucket = $this->items[$index];
-        while ($bucket) {
-            if ($bucket->getKey() == $key) {
-                $bucket->setValue($data);
+        $preBucket = null;
+        $curBucket = $this->items[$index];
+        while ($curBucket) {
+            if ($curBucket->getKey() == $bucket->getKey()) {
+                $curBucket->setValue($bucket->getValue());
                 return true;
             }
 
-            $bucket = $bucket->getNext();
+            $preBucket = $curBucket;
+            $curBucket = $curBucket->getNext();
         }
 
-        $bucket->setNext(new Bucket($hashCode, $key, $data));
+        $preBucket->setNext($bucket);
 
         return true;
     }
@@ -239,8 +248,12 @@ abstract class HashTable implements HashTableInterface
 
             if ($bucket->getKey() == $key) {
 
-                if (is_null($preBucket)) $this->items[$index] = $bucket->getNext();
-                else $preBucket->setNext($bucket->getNext());
+                if (is_null($preBucket)) {
+                    $this->items[$index] = $bucket->getNext();
+
+                    if (is_null($this->items[$index])) array_splice($this->usedIndexes, $index, 1);
+
+                } else $preBucket->setNext($bucket->getNext());
 
                 unset($bucket);
                 --$this->length;
@@ -261,7 +274,36 @@ abstract class HashTable implements HashTableInterface
     public function reset()
     {
         $this->items = [];
+        $this->usedIndexes = [];
         $this->length = 0;
+        $this->cursor = 0;
+        $this->cursorBucket = null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLength(): int
+    {
+        return $this->length;
+    }
+
+    /**
+     * Expand cap and rebuild index.
+     * @return mixed|void
+     */
+    public function expand()
+    {
+        $oldTable = clone $this;
+
+        if ($this->cap < 1024) $this->cap *= 2;
+        else $this->cap += ($this->cap >> 2);
+
+        $this->reset();
+
+        foreach ($oldTable as $key => $value) {
+            $this->set($key, $value);
+        }
     }
 
     /**
@@ -269,5 +311,5 @@ abstract class HashTable implements HashTableInterface
      * @param string $key
      * @return int
      */
-    abstract public function hash(string $key): int;
+    abstract protected function hash(string $key): int;
 }

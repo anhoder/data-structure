@@ -7,7 +7,7 @@
  * 2020/9/27 1:46 下午
  */
 
-namespace Alan\Structure\Hash;
+namespace Alan\Structure\HashTable;
 
 use ArrayAccess;
 use Iterator;
@@ -54,4 +54,10 @@ interface HashTableInterface extends ArrayAccess, Iterator
      * @return mixed
      */
     public function reset();
+
+    /**
+     * Expand cap.
+     * @return mixed
+     */
+    public function expand();
 }
