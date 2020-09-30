@@ -9,29 +9,32 @@
 
 namespace Alan\Structure\Hash;
 
-interface Hash extends \ArrayAccess, \Iterator
+use ArrayAccess;
+use Iterator;
+
+interface HashTableInterface extends ArrayAccess, Iterator
 {
     /**
      * Does the hash has key?
-     * @param $key
+     * @param string $key
      * @return mixed
      */
-    public function has($key);
+    public function has(string $key);
 
     /**
      * Get data.
-     * @param $key
+     * @param string $key
      * @return mixed
      */
-    public function get($key);
+    public function get(string $key);
 
     /**
      * Set data.
-     * @param $key
+     * @param string $key
      * @param $data
      * @return mixed
      */
-    public function set($key, $data);
+    public function set(string $key, $data);
 
     /**
      * Is the hash empty?
@@ -41,10 +44,10 @@ interface Hash extends \ArrayAccess, \Iterator
 
     /**
      * Remove data.
-     * @param $key
+     * @param string $key
      * @return mixed
      */
-    public function remove($key);
+    public function remove(string $key);
 
     /**
      * Reset hash.
