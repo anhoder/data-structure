@@ -9,7 +9,6 @@
 
 namespace Alan\Structure\Hash;
 
-use Alan\Structure\LinkedList\Node;
 
 abstract class HashTable implements HashTableInterface
 {
@@ -63,7 +62,7 @@ abstract class HashTable implements HashTableInterface
      */
     public function current()
     {
-        return $this->items[$this->cursor] ?? null;
+
     }
 
     /**
