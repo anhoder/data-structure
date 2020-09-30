@@ -14,23 +14,56 @@ use Alan\Structure\LinkedList\Node;
 abstract class HashTable implements HashTableInterface
 {
     /**
-     * Current key.
-     * @var string
+     * Current index.
+     * @var int
      */
     protected $cursor;
 
     /**
-     * Content
+     * Current bucket.
+     * @var Bucket
+     */
+    protected $cursorBucket;
+
+    /**
+     * Content.
      * @var Bucket[]
      */
     protected $items;
+
+    /**
+     * @var int[]
+     */
+    protected $usedIndexes;
+
+    /**
+     * @var int
+     */
+    protected $length;
+
+    /**
+     * @var int
+     */
+    protected $cap;
+
+    /**
+     * HashTable constructor.
+     * @param int $cap
+     */
+    public function __construct(int $cap)
+    {
+        $this->length = 0;
+        $this->cursor = 0;
+        $this->cap = $cap;
+    }
+
 
     /**
      * @inheritDoc
      */
     public function current()
     {
-
+        return $this->items[$this->cursor] ?? null;
     }
 
     /**
@@ -38,7 +71,7 @@ abstract class HashTable implements HashTableInterface
      */
     public function next()
     {
-        // TODO: Implement next() method.
+        ++$this->cursor;
     }
 
     /**
@@ -46,7 +79,7 @@ abstract class HashTable implements HashTableInterface
      */
     public function key()
     {
-        // TODO: Implement key() method.
+
     }
 
     /**
@@ -70,7 +103,7 @@ abstract class HashTable implements HashTableInterface
      */
     public function offsetExists($offset)
     {
-        // TODO: Implement offsetExists() method.
+        return $this->has((string)$offset);
     }
 
     /**
@@ -78,7 +111,7 @@ abstract class HashTable implements HashTableInterface
      */
     public function offsetGet($offset)
     {
-        // TODO: Implement offsetGet() method.
+        return $this->get((string)$offset);
     }
 
     /**
@@ -86,7 +119,7 @@ abstract class HashTable implements HashTableInterface
      */
     public function offsetSet($offset, $value)
     {
-        // TODO: Implement offsetSet() method.
+        return $this->set((string)$offset, $value);
     }
 
     /**
@@ -94,31 +127,24 @@ abstract class HashTable implements HashTableInterface
      */
     public function offsetUnset($offset)
     {
-        // TODO: Implement offsetUnset() method.
+        return $this->remove((string)$offset);
     }
 
     /**
-     * @inheritDoc
+     * Get bucket by key.
+     * @param string $key
+     * @return Bucket|null
      */
-    public function has(string $key)
+    protected function getBucket(string $key)
     {
-        $index = $this->hash($key);
-        return isset($this->items[$index]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function get(string $key)
-    {
-        $index = $this->hash($key);
+        $index = $this->hash($key) % $this->cap;
         if (!isset($this->items[$index])) return null;
 
         $bucket = $this->items[$index];
         while ($bucket) {
-            if ($bucket->getKey() == $key) return $bucket->getValue();
+            if ($bucket->getKey() == $key) return $bucket;
 
-            $bucket = $bucket->getNextBucket();
+            $bucket = $bucket->getNext();
         }
 
         return null;
@@ -127,9 +153,53 @@ abstract class HashTable implements HashTableInterface
     /**
      * @inheritDoc
      */
+    public function has(string $key)
+    {
+        $bucket = $this->getBucket($key);
+        if (is_null($bucket)) return false;
+
+        return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function get(string $key)
+    {
+        $bucket = $this->getBucket($key);
+        if (is_null($bucket)) return null;
+
+        return $bucket->getValue();
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function set(string $key, $data)
     {
+        $hashCode = $this->hash($key);
+        $index = $hashCode % $this->cap;
+        ++$this->length;
 
+        if (!isset($this->items[$index])) {
+            $this->items[$index] = new Bucket($hashCode, $key, $data);
+            $this->usedIndexes[] = $index;
+            return true;
+        }
+
+        $bucket = $this->items[$index];
+        while ($bucket) {
+            if ($bucket->getKey() == $key) {
+                $bucket->setValue($data);
+                return true;
+            }
+
+            $bucket = $bucket->getNext();
+        }
+
+        $bucket->setNext(new Bucket($hashCode, $key, $data));
+
+        return true;
     }
 
     /**
@@ -137,15 +207,41 @@ abstract class HashTable implements HashTableInterface
      */
     public function isEmpty(): bool
     {
-        // TODO: Implement isEmpty() method.
+        return $this->length == 0;
     }
 
     /**
      * @inheritDoc
      */
-    public function remove($key)
+    public function remove(string $key)
     {
-        // TODO: Implement remove() method.
+        $index = $this->hash($key) % $this->cap;
+
+        if (!isset($this->items[$index])) return false;
+
+        $bucket = $this->items[$index];
+        /**
+         * @var Bucket|null $preBucket
+         */
+        $preBucket = null;
+        while ($bucket) {
+
+            if ($bucket->getKey() == $key) {
+
+                if (is_null($preBucket)) $this->items[$index] = $bucket->getNext();
+                else $preBucket->setNext($bucket->getNext());
+
+                unset($bucket);
+                --$this->length;
+
+                return true;
+            }
+
+            $preBucket = $bucket;
+            $bucket = $bucket->getNext();
+        }
+
+        return false;
     }
 
     /**
@@ -153,7 +249,8 @@ abstract class HashTable implements HashTableInterface
      */
     public function reset()
     {
-        // TODO: Implement reset() method.
+        $this->items = [];
+        $this->length = 0;
     }
 
     /**

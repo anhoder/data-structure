@@ -29,7 +29,7 @@ class Bucket
     /**
      * @var Bucket
      */
-    protected $nextBucket;
+    protected $next;
 
     /**
      * Bucket constructor.
@@ -80,16 +80,16 @@ class Bucket
     /**
      * @return Bucket
      */
-    public function getNextBucket(): Bucket
+    public function getNext(): Bucket
     {
-        return $this->nextBucket;
+        return $this->next;
     }
 
     /**
-     * @param Bucket $nextBucket
+     * @param Bucket $next
      */
-    public function setNextBucket(Bucket $nextBucket)
+    public function setNext(Bucket $next)
     {
-        $this->nextBucket = $nextBucket;
+        $this->next = $next;
     }
 }
