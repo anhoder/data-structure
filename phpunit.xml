@@ -15,5 +15,8 @@
     <testsuite name="CircularLinkedListTest">
       <file>tests/CircularLinkedListTest.php</file>
     </testsuite>
+    <testsuite name="Times33HashTableTest">
+      <file>tests/Times33HashTableTest.php</file>
+    </testsuite>
   </testsuites>
 </phpunit>
