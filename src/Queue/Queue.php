@@ -21,7 +21,7 @@ class Queue implements QueueInterface
      */
     public function __construct()
     {
-        $this->items = [];
+        $this->reset();
     }
 
     /**

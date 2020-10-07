@@ -18,5 +18,11 @@
     <testsuite name="Times33HashTableTest">
       <file>tests/Times33HashTableTest.php</file>
     </testsuite>
+    <testsuite name="QueueTest">
+      <file>tests/QueueTest.php</file>
+    </testsuite>
+    <testsuite name="StackTest">
+      <file>tests/StackTest.php</file>
+    </testsuite>
   </testsuites>
 </phpunit>
