@@ -9,6 +9,8 @@
 
 namespace Alan\Structure\Queue;
 
+use Alan\Structure\LinkedList\LinkedList;
+
 /**
  * Class Queue
  * @package Alan\Structure\Queue
@@ -16,7 +18,7 @@ namespace Alan\Structure\Queue;
 class Queue implements QueueInterface
 {
     /**
-     * @var array
+     * @var LinkedList
      */
     private $items;
 
@@ -34,7 +36,7 @@ class Queue implements QueueInterface
      */
     public function isEmpty(): bool
     {
-        return empty($this->items);
+        return $this->items->getLength() == 0;
     }
 
     /**
@@ -44,7 +46,7 @@ class Queue implements QueueInterface
      */
     public function enqueue($data): bool
     {
-        $this->items[] = $data;
+        $this->items->add($data);
 
         return true;
     }
@@ -56,7 +58,10 @@ class Queue implements QueueInterface
     public function dequeue()
     {
         if ($this->isEmpty()) return null;
-        return array_shift($this->items);
+        $firstIndex = 0;
+        $data = $this->items->get($firstIndex);
+        $this->items->remove($firstIndex);
+        return $data;
     }
 
     /**
@@ -65,7 +70,8 @@ class Queue implements QueueInterface
      */
     public function reset()
     {
-        $this->items = [];
+        if (is_null($this->items)) $this->items = new LinkedList();
+        else $this->items->clear();
     }
 
     /**
@@ -74,6 +80,6 @@ class Queue implements QueueInterface
      */
     public function getLength(): int
     {
-        return count($this->items);
+        return $this->items->getLength();
     }
 }

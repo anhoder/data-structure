@@ -9,6 +9,8 @@
 
 namespace Alan\Structure\Stack;
 
+use Alan\Structure\LinkedList\LinkedList;
+
 /**
  * Class Stack
  * @package Alan\Structure\Stack
@@ -16,7 +18,7 @@ namespace Alan\Structure\Stack;
 class Stack implements StackInterface
 {
     /**
-     * @var array
+     * @var LinkedList
      */
     protected $items;
 
@@ -34,7 +36,7 @@ class Stack implements StackInterface
      */
     public function isEmpty(): bool
     {
-        return empty($this->items);
+        return $this->items->getLength() == 0;
     }
 
     /**
@@ -43,7 +45,8 @@ class Stack implements StackInterface
      */
     public function reset()
     {
-        $this->items = [];
+        if (is_null($this->items)) $this->items = new LinkedList();
+        else $this->items->clear();
     }
 
     /**
@@ -53,7 +56,7 @@ class Stack implements StackInterface
      */
     public function push($data)
     {
-        array_push($this->items, $data);
+        $this->items->add($data);
     }
 
     /**
@@ -62,6 +65,10 @@ class Stack implements StackInterface
      */
     public function pop()
     {
-        return array_pop($this->items);
+        $lastIndex = $this->items->getLength() - 1;
+        $data = $this->items->get($lastIndex);
+        $this->items->remove($lastIndex);
+
+        return $data;
     }
 }
