@@ -9,6 +9,10 @@
 
 namespace Alan\Structure\Queue;
 
+/**
+ * Interface QueueInterface
+ * @package Alan\Structure\Queue
+ */
 interface QueueInterface
 {
     /**
@@ -35,4 +39,10 @@ interface QueueInterface
      * @return mixed
      */
     public function reset();
+
+    /**
+     * Get length of queue.
+     * @return mixed
+     */
+    public function getLength(): int;
 }

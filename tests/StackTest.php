@@ -10,6 +10,9 @@
 use Alan\Structure\Stack\Stack;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class StackTest
+ */
 class StackTest extends TestCase
 {
     /**

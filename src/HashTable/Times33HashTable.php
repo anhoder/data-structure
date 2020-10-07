@@ -9,6 +9,10 @@
 
 namespace Alan\Structure\HashTable;
 
+/**
+ * Class Times33HashTable
+ * @package Alan\Structure\HashTable
+ */
 class Times33HashTable extends HashTable
 {
 

@@ -12,6 +12,10 @@ namespace Alan\Structure\HashTable;
 use ArrayAccess;
 use Iterator;
 
+/**
+ * Interface HashTableInterface
+ * @package Alan\Structure\HashTable
+ */
 interface HashTableInterface extends ArrayAccess, Iterator
 {
     /**

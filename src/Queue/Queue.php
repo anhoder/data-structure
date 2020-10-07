@@ -9,6 +9,10 @@
 
 namespace Alan\Structure\Queue;
 
+/**
+ * Class Queue
+ * @package Alan\Structure\Queue
+ */
 class Queue implements QueueInterface
 {
     /**
@@ -62,5 +66,14 @@ class Queue implements QueueInterface
     public function reset()
     {
         $this->items = [];
+    }
+
+    /**
+     * Get length.
+     * @return int
+     */
+    public function getLength(): int
+    {
+        return count($this->items);
     }
 }

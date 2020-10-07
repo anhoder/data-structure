@@ -9,6 +9,10 @@
 
 namespace Alan\Structure\Stack;
 
+/**
+ * Class Stack
+ * @package Alan\Structure\Stack
+ */
 class Stack implements StackInterface
 {
     /**

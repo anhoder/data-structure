@@ -12,6 +12,10 @@ namespace Alan\Structure\Exception;
 use Exception;
 use Throwable;
 
+/**
+ * Class CircularListException
+ * @package Alan\Structure\Exception
+ */
 class CircularListException extends Exception
 {
     public function __construct($node = null, $code = 0, Throwable $previous = null)

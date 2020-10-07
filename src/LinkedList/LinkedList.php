@@ -13,6 +13,10 @@ use Alan\Structure\Exception\CircularListException;
 use ArrayAccess;
 use Iterator;
 
+/**
+ * Class LinkedList
+ * @package Alan\Structure\LinkedList
+ */
 class LinkedList implements ArrayAccess, Iterator
 {
     /**

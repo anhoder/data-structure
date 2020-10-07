@@ -13,6 +13,10 @@ use Alan\Structure\Exception\CircularListException;
 use ArrayAccess;
 use Iterator;
 
+/**
+ * Class DoublyLinkedList
+ * @package Alan\Structure\DoublyLinkedList
+ */
 class DoublyLinkedList implements ArrayAccess, Iterator
 {
     /**

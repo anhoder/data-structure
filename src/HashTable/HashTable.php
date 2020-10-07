@@ -9,7 +9,10 @@
 
 namespace Alan\Structure\HashTable;
 
-
+/**
+ * Class HashTable
+ * @package Alan\Structure\HashTable
+ */
 abstract class HashTable implements HashTableInterface
 {
     /**

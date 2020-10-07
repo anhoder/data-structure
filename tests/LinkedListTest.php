@@ -5,6 +5,9 @@ use Alan\Structure\LinkedList\LinkedList;
 use Alan\Structure\LinkedList\Node;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class LinkedListTest
+ */
 class LinkedListTest extends TestCase
 {
     /**

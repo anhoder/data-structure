@@ -9,6 +9,10 @@
 
 namespace Alan\Structure\HashTable;
 
+/**
+ * Class Bucket
+ * @package Alan\Structure\HashTable
+ */
 class Bucket
 {
     /**

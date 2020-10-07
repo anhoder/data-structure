@@ -10,6 +10,9 @@
 use Alan\Structure\Queue\Queue;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class QueueTest
+ */
 class QueueTest extends TestCase
 {
     /**

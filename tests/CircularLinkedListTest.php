@@ -6,6 +6,9 @@ use Alan\Structure\DoublyLinkedList\DoublyNode;
 use Alan\Structure\Exception\CircularListException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class CircularLinkedListTest
+ */
 class CircularLinkedListTest extends TestCase
 {
     /**

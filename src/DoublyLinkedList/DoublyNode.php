@@ -13,6 +13,10 @@ use Alan\Structure\Traits\LinkedList\Data;
 use Alan\Structure\Traits\LinkedList\Next;
 use Alan\Structure\Traits\LinkedList\Previous;
 
+/**
+ * Class DoublyNode
+ * @package Alan\Structure\DoublyLinkedList
+ */
 class DoublyNode
 {
     use Previous;

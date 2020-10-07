@@ -10,6 +10,9 @@
 use Alan\Structure\HashTable\Times33HashTable;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class Times33HashTableTest
+ */
 class Times33HashTableTest extends TestCase
 {
     /**
