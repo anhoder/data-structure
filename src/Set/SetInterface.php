@@ -44,7 +44,19 @@ interface SetInterface
 
     /**
      * Get and remove random data.
-     * @return string
+     * @return string|false
      */
-    public function pop(): string;
+    public function pop();
+
+    /**
+     * Reset.
+     * @return mixed
+     */
+    public function reset();
+
+    /**
+     * Is empty the set.
+     * @return bool
+     */
+    public function isEmpty(): bool;
 }

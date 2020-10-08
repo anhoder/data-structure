@@ -75,7 +75,7 @@ abstract class HashTable implements HashTableInterface
     {
         if (!is_null($this->cursorBucket)) $this->cursorBucket = $this->cursorBucket->getNext();
 
-        if (is_null($this->cursorBucket) && $this->cursor < count($this->usedIndexes) - 1 ) {
+        while (is_null($this->cursorBucket) && $this->cursor < count($this->usedIndexes) - 1) {
             ++$this->cursor;
             $this->cursorBucket = $this->items[$this->usedIndexes[$this->cursor]];
         }
@@ -94,7 +94,8 @@ abstract class HashTable implements HashTableInterface
      */
     public function valid()
     {
-        return $this->cursor != count($this->usedIndexes) - 1 || !is_null($this->cursorBucket);
+        $maxIndex = count($this->usedIndexes) - 1;
+        return $this->cursor < $maxIndex || ($this->cursor == $maxIndex && !is_null($this->cursorBucket));
     }
 
     /**
@@ -103,7 +104,8 @@ abstract class HashTable implements HashTableInterface
     public function rewind()
     {
         $this->cursor = 0;
-        $this->cursorBucket = $this->items[$this->usedIndexes[$this->cursor]] ?? null;
+        if (isset($this->items[$this->usedIndexes[$this->cursor]])) $this->cursorBucket = $this->items[$this->usedIndexes[$this->cursor]];
+        else $this->next();
     }
 
     /**
@@ -251,12 +253,8 @@ abstract class HashTable implements HashTableInterface
 
             if ($bucket->getKey() == $key) {
 
-                if (is_null($preBucket)) {
-                    $this->items[$index] = $bucket->getNext();
-
-                    if (is_null($this->items[$index])) array_splice($this->usedIndexes, $index, 1);
-
-                } else $preBucket->setNext($bucket->getNext());
+                if (is_null($preBucket)) $this->items[$index] = $bucket->getNext();
+                else $preBucket->setNext($bucket->getNext());
 
                 unset($bucket);
                 --$this->length;
@@ -281,6 +279,29 @@ abstract class HashTable implements HashTableInterface
         $this->length = 0;
         $this->cursor = 0;
         $this->cursorBucket = null;
+    }
+
+    /**
+     * Random.
+     * @return string|null
+     */
+    public function randomKey()
+    {
+        $i = 1;
+        $key = null;
+        foreach ($this as $k => $v) {
+            if ($i == 1) {
+                $key = $k;
+                ++$i;
+                continue;
+            }
+
+            $rand = rand(0, 1);
+            $key = $i * $rand > 1 ? $key : $k;
+            ++$i;
+        }
+
+        return $key;
     }
 
     /**

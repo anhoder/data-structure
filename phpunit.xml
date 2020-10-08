@@ -24,5 +24,8 @@
     <testsuite name="StackTest">
       <file>tests/StackTest.php</file>
     </testsuite>
+    <testsuite name="SetTest">
+      <file>tests/SetTest.php</file>
+    </testsuite>
   </testsuites>
 </phpunit>

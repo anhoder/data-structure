@@ -64,4 +64,10 @@ interface HashTableInterface extends ArrayAccess, Iterator
      * @return mixed
      */
     public function expand();
+
+    /**
+     * Get length of hash table.
+     * @return int
+     */
+    public function getLength(): int;
 }
