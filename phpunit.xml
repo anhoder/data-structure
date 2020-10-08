@@ -27,5 +27,8 @@
     <testsuite name="SetTest">
       <file>tests/SetTest.php</file>
     </testsuite>
+    <testsuite name="UniqueQueueTest">
+      <file>tests/UniqueQueueTest.php</file>
+    </testsuite>
   </testsuites>
 </phpunit>
