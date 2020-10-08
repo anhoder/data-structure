@@ -31,6 +31,7 @@ class SetTest extends TestCase
         $set->add(1);
         $set->add('test');
         $set->add('test2');
+        $set->add('test');
         $this->assertEquals(3, $set->getLength());
         $this->assertEquals(true, $set->exists('test'));
         $this->assertEquals(true, $set->exists('test2'));
